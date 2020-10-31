@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Application;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +20,7 @@ namespace WebAPI
 {
     public class Startup
     {
+        readonly string MyAllowedSpecificOrigins = "_myAllowedSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -30,6 +32,18 @@ namespace WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddCors();
+
+            /*services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder
+                        .AllowAnyMethod()
+                        .AllowCredentials()
+                        .SetIsOriginAllowed((host) => true)
+                        .AllowAnyHeader());
+            });*/
+
             services.AddScoped<IObjectFactory, Application.ObjectFactory>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddDbContext<LotteryAppContext>(options =>
@@ -49,6 +63,11 @@ namespace WebAPI
             app.UseRouting();
 
             app.UseAuthorization();
+            //app.UseMiddleware<CorsMiddleware>();
+            //app.UseCorsMiddleware();
+            app.UseCors(
+                options => options.SetIsOriginAllowed(x => _ = true).AllowAnyMethod().AllowAnyHeader().AllowCredentials()
+            );
 
             app.UseEndpoints(endpoints =>
             {
