@@ -14,5 +14,11 @@ namespace Application.Managers
             _context = context;
             _dbSet = context.Users;
         }
+
+        public string Login()
+        {
+
+        }
+
     }
 }

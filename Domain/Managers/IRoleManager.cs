@@ -5,9 +5,7 @@ using System.Text;
 
 namespace Domain.Managers
 {
-    public interface IUserManager: IBaseManager<User>
+    public interface IRoleManager: IBaseManager<Role>
     {
-        public string Login()
-
     }
 }

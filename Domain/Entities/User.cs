@@ -14,6 +14,8 @@ namespace Domain.Entities
         public string Email { set; get; }
         public string Password { set; get; }
 
+        public ICollection<UserRole> UserRoles { get; set; }
+
         [NotMapped]
         public override long Key { get { return this.Id; } set { this.Id = value; } }
     }
