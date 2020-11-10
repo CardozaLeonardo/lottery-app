@@ -13,6 +13,8 @@ namespace Domain.Managers
 
         Task<T> Get(long id);
 
+        Task<T> GetByField(string field, string value);
+
         Task<T> Add(T model);
 
         Task<T> Delete(long id);

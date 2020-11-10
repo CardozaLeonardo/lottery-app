@@ -39,6 +39,15 @@ namespace Application.Managers
             return await FindEntityTestType(id, typeList);
         }
 
+        public async virtual Task<TEntity> GetByField(string field, string value)
+        {
+            
+            
+            //_dbSet.FirstOrDefault
+            
+            return null;
+        }
+
         public virtual async Task<TEntity> Add(TEntity model)
         {
             _dbSet.Add(model);
