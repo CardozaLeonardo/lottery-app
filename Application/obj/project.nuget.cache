@@ -1,16 +1,16 @@
 {
   "version": 2,
-  "dgSpecHash": "i0+/CI+j0xhc8JXU8GSfOxvSoNDH9bWBYOfwn0wqVEooOVK4xprPZdnmprdphVQIhnSNeqEihEFQQU+F8ShEZw==",
+  "dgSpecHash": "oE7wXlZ+kto5x/22qB2D1Sl3qr4D905vmOCwYc7XMIEANMLQHM7kb4Qe3UqnsYvDfa1+gjpP6Ds5MPs3GBV+oA==",
   "success": true,
   "projectFilePath": "C:\\Users\\50586\\source\\repos\\LotteryApp\\Application\\Application.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\50586\\.nuget\\packages\\automapper\\10.1.0\\automapper.10.1.0.nupkg.sha512",
     "C:\\Users\\50586\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\8.1.0\\automapper.extensions.microsoft.dependencyinjection.8.1.0.nupkg.sha512",
+    "C:\\Users\\50586\\.nuget\\packages\\bcrypt.net-next\\4.0.0\\bcrypt.net-next.4.0.0.nupkg.sha512",
     "C:\\Users\\50586\\.nuget\\packages\\fluentvalidation\\9.2.0\\fluentvalidation.9.2.0.nupkg.sha512",
     "C:\\Users\\50586\\.nuget\\packages\\fluentvalidation.aspnetcore\\9.2.0\\fluentvalidation.aspnetcore.9.2.0.nupkg.sha512",
     "C:\\Users\\50586\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\9.2.0\\fluentvalidation.dependencyinjectionextensions.9.2.0.nupkg.sha512",
     "C:\\Users\\50586\\.nuget\\packages\\log4net\\2.0.12\\log4net.2.0.12.nupkg.sha512",
-    "C:\\Users\\50586\\.nuget\\packages\\mediatr\\9.0.0\\mediatr.9.0.0.nupkg.sha512",
     "C:\\Users\\50586\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\50586\\.nuget\\packages\\microsoft.bcl.hashcode\\1.1.0\\microsoft.bcl.hashcode.1.1.0.nupkg.sha512",
     "C:\\Users\\50586\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",

@@ -29,6 +29,15 @@
           "lib/netstandard2.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll": {}
         }
       },
+      "BCrypt.Net-Next/4.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.1/BCrypt.Net-Next.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.1/BCrypt.Net-Next.dll": {}
+        }
+      },
       "FluentValidation/9.2.0": {
         "type": "package",
         "compile": {
@@ -77,15 +86,6 @@
         },
         "runtime": {
           "lib/netstandard2.0/log4net.dll": {}
-        }
-      },
-      "MediatR/9.0.0": {
-        "type": "package",
-        "compile": {
-          "lib/netstandard2.1/MediatR.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.1/MediatR.dll": {}
         }
       },
       "Microsoft.Bcl.AsyncInterfaces/1.1.1": {
@@ -1640,6 +1640,35 @@
         "lib/netstandard2.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll"
       ]
     },
+    "BCrypt.Net-Next/4.0.0": {
+      "sha512": "1rjyVK+/YJnCElALjVNt/aUPIIRoFocFZzblsiFo2giA3WVYExk/E5UT6i4RqEHwIwEwoQHt02I1llaEIQ59eQ==",
+      "type": "package",
+      "path": "bcrypt.net-next/4.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "bcrypt.net-next.4.0.0.nupkg.sha512",
+        "bcrypt.net-next.nuspec",
+        "lib/net20/BCrypt.Net-Next.dll",
+        "lib/net20/BCrypt.Net-Next.xml",
+        "lib/net35/BCrypt.Net-Next.dll",
+        "lib/net35/BCrypt.Net-Next.xml",
+        "lib/net40/BCrypt.Net-Next.dll",
+        "lib/net40/BCrypt.Net-Next.xml",
+        "lib/net452/BCrypt.Net-Next.dll",
+        "lib/net452/BCrypt.Net-Next.xml",
+        "lib/net462/BCrypt.Net-Next.dll",
+        "lib/net462/BCrypt.Net-Next.xml",
+        "lib/net472/BCrypt.Net-Next.dll",
+        "lib/net472/BCrypt.Net-Next.xml",
+        "lib/net48/BCrypt.Net-Next.dll",
+        "lib/net48/BCrypt.Net-Next.xml",
+        "lib/netstandard2.0/BCrypt.Net-Next.dll",
+        "lib/netstandard2.0/BCrypt.Net-Next.xml",
+        "lib/netstandard2.1/BCrypt.Net-Next.dll",
+        "lib/netstandard2.1/BCrypt.Net-Next.xml"
+      ]
+    },
     "FluentValidation/9.2.0": {
       "sha512": "LNUzNXWlBQavU/eB9pf4Tg8TTWgCw8E85OBA1GJv4xkdwuer9FuFLHTBjcYX+gGBkPFc2G+3utzEA4aMhUOL3w==",
       "type": "package",
@@ -1709,24 +1738,6 @@
         "log4net.2.0.12.nupkg.sha512",
         "log4net.nuspec",
         "package-icon.png"
-      ]
-    },
-    "MediatR/9.0.0": {
-      "sha512": "8b3UYNxegHVYcJMG2zH8wn+YqxLvXG+eMfj0cMCq/jTW72p6O3PCKMkrIv0mqyxdW7bA4gblsocw7n+/9Akg5g==",
-      "type": "package",
-      "path": "mediatr/9.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "gradient_128x128.png",
-        "lib/net461/MediatR.dll",
-        "lib/net461/MediatR.xml",
-        "lib/netstandard2.0/MediatR.dll",
-        "lib/netstandard2.0/MediatR.xml",
-        "lib/netstandard2.1/MediatR.dll",
-        "lib/netstandard2.1/MediatR.xml",
-        "mediatr.9.0.0.nupkg.sha512",
-        "mediatr.nuspec"
       ]
     },
     "Microsoft.Bcl.AsyncInterfaces/1.1.1": {
@@ -6007,9 +6018,9 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 8.1.0",
+      "BCrypt.Net-Next >= 4.0.0",
       "Domain >= 1.0.0",
       "FluentValidation.AspNetCore >= 9.2.0",
-      "MediatR >= 9.0.0",
       "Microsoft.EntityFrameworkCore >= 3.1.9",
       "Persistence >= 1.0.0",
       "PoweredSoft.DynamicLinq >= 1.1.11",
@@ -6065,13 +6076,13 @@
             "target": "Package",
             "version": "[8.1.0, )"
           },
+          "BCrypt.Net-Next": {
+            "target": "Package",
+            "version": "[4.0.0, )"
+          },
           "FluentValidation.AspNetCore": {
             "target": "Package",
             "version": "[9.2.0, )"
-          },
-          "MediatR": {
-            "target": "Package",
-            "version": "[9.0.0, )"
           },
           "Microsoft.EntityFrameworkCore": {
             "target": "Package",

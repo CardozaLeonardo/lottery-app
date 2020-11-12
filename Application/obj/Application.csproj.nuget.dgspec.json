@@ -49,13 +49,13 @@
               "target": "Package",
               "version": "[8.1.0, )"
             },
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.0.0, )"
+            },
             "FluentValidation.AspNetCore": {
               "target": "Package",
               "version": "[9.2.0, )"
-            },
-            "MediatR": {
-              "target": "Package",
-              "version": "[9.0.0, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
