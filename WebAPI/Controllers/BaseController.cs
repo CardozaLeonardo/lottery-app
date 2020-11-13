@@ -20,7 +20,7 @@ namespace WebAPI.Controllers
         where TGetQuery : ApiAction, new()
     {
         public IBaseManager<TEntity> _manager;
-        public const int _defaultPageSize = 5;
+        public const int _defaultPageSize = 10;
         public IMapper _mapper;
 
         [HttpGet]
@@ -34,6 +34,10 @@ namespace WebAPI.Controllers
 
                 if (pageNumber.HasValue)
                     query = Paginate(query, pageNumber.Value);
+                else
+                {
+                    Paginate(query, 1);
+                }
 
                 var items = query.ToList();
 

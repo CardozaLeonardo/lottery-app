@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Application;
+using Application.Services;
 using AutoMapper;
+using Domain.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
@@ -70,6 +72,8 @@ namespace WebAPI
 
             services.AddScoped<IObjectFactory, Application.ObjectFactory>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddScoped<IHashingService, HashingService>();
+
             services.AddDbContext<LotteryAppContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("LotteryAppContext"), b => b.MigrationsAssembly("Persistence")));
         }
