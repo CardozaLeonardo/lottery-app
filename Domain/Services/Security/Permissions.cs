@@ -13,10 +13,17 @@ namespace Domain.Services.Security
 
         public static class UserPermissions
         {
-            public const string Add = "users.add";
-            public const string Edit = "users.edit";
-            public const string EditRole = "users.edit.role";
-            public const string TestPermission = "users.test";
+            public const string Add = "user.add";
+            public const string Edit = "user.edit";
+            public const string TestPermission = "user.test";
         }
+
+        public static class RolePermissions
+        {
+            public const string Add = "role.add";
+            public const string Edit = "role.edit";
+            public const string ListPermissions = "role.permission.list";
+        }
+
     }
 }

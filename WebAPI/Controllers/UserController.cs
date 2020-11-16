@@ -23,7 +23,6 @@ namespace WebAPI.Controllers
         public UserController(IObjectFactory factory, IMapper mapper, IHashingService hashingService) : base()
         {
             _userManager = factory.Resolve<IUserManager>();
-            _manager = factory.Resolve<IUserManager>();
             _mapper = mapper;
             _hashingService = hashingService;
         }
