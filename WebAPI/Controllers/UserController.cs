@@ -62,7 +62,12 @@ namespace WebAPI.Controllers
 
             await _userManager.Add(userModel);
 
-            return Ok("Created");
+            var userOutput = _mapper.Map<UserQuery>(userModel);
+
+
+
+            //return Ok("Created with Id: " + userModel.Id);
+            return Created("/user", userOutput);
 
         }
     }
