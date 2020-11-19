@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Managers
 {
@@ -30,6 +31,11 @@ namespace Application.Managers
         public virtual User GetByUsernameOrEmail(string term)
         {
             return _dbSet.FirstOrDefault(p => p.Username == term || p.Email == term);
+        }
+
+        public virtual User GetByUsernameOrEmailWithRole(string term)
+        {
+            return _dbSet.Include(u => u.UserRoles).ThenInclude(ur => ur.Role).FirstOrDefault(p => p.Username == term || p.Email == term);
         }
     }
 }

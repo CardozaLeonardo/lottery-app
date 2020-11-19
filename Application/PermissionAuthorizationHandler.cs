@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Domain;
 using System.Security.Claims;
 using Domain.Services.Security;
+using Domain.Entities;
 
 namespace Application.Security
 {
@@ -29,8 +30,18 @@ namespace Application.Security
                 return;
             }
 
-            context.Succeed(requirement);
-            return;
+            User user = _userManager.GetByUsernameOrEmailWithRole(context.User.Identity.Name);
+
+            foreach(UserRole userRole in user.UserRoles)
+            {
+                if (await _roleManager.CheckPermissionInRole(userRole.Role.Id, requirement.Permission))
+                {
+                    context.Succeed(requirement);
+                    return;
+                }
+                return; 
+            }
+
 
             // Get all the roles the user belongs to and check if any of the roles has the permission required
             // for the authorization to succeed.

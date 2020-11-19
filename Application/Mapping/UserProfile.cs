@@ -11,6 +11,8 @@ namespace Application.Mapping
         {
             CreateMap<CreateUserCommand, User>();
             CreateMap<User, UserQuery>();
+            CreateMap<Role, CreateRoleCommand>();
+            CreateMap<Role, RoleQuery>();
         }
     }
 }

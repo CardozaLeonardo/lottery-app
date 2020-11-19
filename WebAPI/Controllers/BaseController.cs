@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebAPI.Controllers
 {
     public class BaseController<TEntity, TCreateCommand, TGetQuery> : 
-        ControllerBase where TEntity : KeyedEntity, new() 
+        Controller where TEntity : KeyedEntity, new() 
         where TCreateCommand: ApiAction, new()
         where TGetQuery : ApiAction, new()
     {

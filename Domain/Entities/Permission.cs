@@ -8,8 +8,10 @@ namespace Domain.Entities
     public class Permission: KeyedEntity 
     {
         public long PermissionId { get; set; }
-        public string Name {get; set;}
+        public string Name { get; set; }
         public string CodeName { get; set;}
+
+        public ICollection<RolePermission> RolePermissions { get; set; }
 
         [NotMapped]
         public override long Key { get { return this.PermissionId; } set { this.PermissionId = value; } }
