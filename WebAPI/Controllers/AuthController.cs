@@ -23,7 +23,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class AuthController : Controller
     {
         private readonly IConfiguration _configuration;
         private readonly IUserManager _userManager;

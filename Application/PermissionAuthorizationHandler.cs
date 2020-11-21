@@ -25,7 +25,7 @@ namespace Application.Security
         //TODO finish this
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
         {
-            if (context.User == null)
+            if (context.User == null || context.User.Identity.Name == null)
             {
                 return;
             }
