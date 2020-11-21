@@ -76,6 +76,7 @@ namespace WebAPI
             services.AddScoped<IObjectFactory, Application.ObjectFactory>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IHashingService, HashingService>();
+            services.AddScoped<IJwtService, JwtService>();
 
             services.AddDbContext<LotteryAppContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("LotteryAppContext"), b => b.MigrationsAssembly("Persistence")));
