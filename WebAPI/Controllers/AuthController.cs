@@ -23,7 +23,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class AuthController : Controller
     {
         private readonly IConfiguration _configuration;
         private readonly IUserManager _userManager;
@@ -51,7 +51,7 @@ namespace WebAPI.Controllers
             if (!_hashingService.VerifyPassword(authCommand.Password, user.Password))
                 return Unauthorized(new { message = "Username or Password incorrect"});
 
-            var nameClaim = new Claim(ClaimTypes.NameIdentifier, user.Username);
+            var nameClaim = new Claim(ClaimTypes.Name, user.Username);
             ClaimsIdentity claimsIdentity = new ClaimsIdentity();
 
             claimsIdentity.AddClaim(nameClaim);
