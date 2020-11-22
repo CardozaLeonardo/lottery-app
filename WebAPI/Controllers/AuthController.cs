@@ -29,6 +29,7 @@ namespace WebAPI.Controllers
         private readonly IUserManager _userManager;
         private readonly IHashingService _hashingService;
         private readonly IJwtService _jwtService;
+        private readonly IMapper _mapper;
 
         public AuthController(IConfiguration configuration , IObjectFactory factory, 
             IMapper mapper, IHashingService hashingService, IJwtService jwtService)
@@ -37,6 +38,7 @@ namespace WebAPI.Controllers
             _userManager = factory.Resolve<IUserManager>();
             _hashingService = hashingService;
             _jwtService = jwtService;
+            _mapper = mapper;
         }
 
         [HttpPost]
@@ -58,6 +60,16 @@ namespace WebAPI.Controllers
                 Token = _jwtService.CreateToken(user.Username)
             }) ; 
         }
+
+        [HttpGet]
+        [Route("[action]")]
+        [Authorize]
+        public IActionResult Me()
+        {
+
+            return Ok(HttpContext.User.Claims.ToArray()[0].Value);
+        }
+
         
         [Route("[action]")]
         [Authorize(Permissions.UserPermissions.TestPermission)]
