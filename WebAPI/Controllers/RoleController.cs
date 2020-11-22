@@ -26,18 +26,29 @@ namespace WebAPI.Controllers
             _roleManager = factory.Resolve<IRoleManager>();
         }
 
-        [Route("[action]/{id}")]
+        [Route("list-role-permissions/{roleId}")]
         [Authorize(Permissions.RolePermissions.ListPermissions)]
         public async Task<ActionResult<IEnumerable<Permission>>> ListRolePermission(long roleId)
         {
-            return await _roleManager.GetAllPermissionsInRole(roleId);
+            List<PermissionQuery> result = _mapper.Map<List<PermissionQuery>>(await _roleManager.GetAllPermissionsInRole(roleId));
+            return Ok(result);
         }
 
         [Route("[action]")]
-        [Authorize(Permissions.RolePermissions.ListPermissions)]
         public async Task<IActionResult> AddPermissionToRole(string permissionCodeName)
         {
             return Ok(new { message = "Hi"});
         }
+
+        [Route("add-user")]
+        public async Task<IActionResult> AddUserToRole(AddUserToRoleCommand addUserToRoleCommand)
+        {
+            bool result = await _roleManager.AddUserToRole(addUserToRoleCommand.UserId, addUserToRoleCommand.RoleId);
+
+            if (result)
+                return StatusCode(201);  
+            return StatusCode(400);
+        }
+
     }
 }

@@ -49,8 +49,8 @@ namespace Persistence
              .HasOne(rp => rp.Permission)
              .WithMany(r => r.RolePermissions)
              .HasForeignKey(rp => rp.PermissionID);
+
+            modelBuilder.Seed();
         }
-
-
     }
 }

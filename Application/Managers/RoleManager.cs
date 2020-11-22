@@ -24,7 +24,7 @@ namespace Application.Managers
             List<Permission> permissions = new List<Permission>();
             Role role = await _dbSet.Include(r => r.RolePermissions).ThenInclude(rp => rp.Permission).SingleOrDefaultAsync(r => r.Id == roleId);
 
-            if (role.RolePermissions == null)
+            if (role == null)
                 return null;
 
             foreach(RolePermission rolePermission in role.RolePermissions)
@@ -73,5 +73,26 @@ namespace Application.Managers
             //this may need better handling
             return null;
         }
+
+        public async Task<bool> AddUserToRole(long userId, long roleId)
+        {
+            User user = await _context.Users.SingleOrDefaultAsync(u => u.Id == userId);
+            Role role = await _dbSet.SingleOrDefaultAsync(r => r.Id == roleId);
+
+            if (user.Id != 0 && role.Id != 0)
+            {
+                UserRole userRole = new UserRole()
+                {
+                    UserId = userId,
+                    RoleId = roleId
+                };
+
+                _context.UserRole.Add(userRole);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
+
     } 
 }

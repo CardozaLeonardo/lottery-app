@@ -10,5 +10,9 @@ namespace Domain.Managers
     {
         Task<List<Permission>> GetAllPermissionsInRole(long RoleId);
         Task<bool> CheckPermissionInRole(long roleId, string permissionCodeName);
+        Task<Permission> AddPermissionToRole(long roleId, string permissionCodeName);
+        Task<bool> AddUserToRole(long userId, long roleId);
+
+
     }
 }

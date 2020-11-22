@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence;
 
 namespace Persistence.Migrations
 {
     [DbContext(typeof(LotteryAppContext))]
-    partial class LotteryAppContextModelSnapshot : ModelSnapshot
+    [Migration("20201122062836_TestingSeed")]
+    partial class TestingSeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,12 +89,6 @@ namespace Persistence.Migrations
                             PermissionId = 8L,
                             CodeName = "role.list",
                             Name = "List Role"
-                        },
-                        new
-                        {
-                            PermissionId = 9L,
-                            CodeName = "role.permission.list",
-                            Name = "List Permissions in Role"
                         });
                 });
 
@@ -177,11 +173,6 @@ namespace Persistence.Migrations
                         {
                             RoleId = 1L,
                             PermissionID = 8L
-                        },
-                        new
-                        {
-                            RoleId = 1L,
-                            PermissionID = 9L
                         });
                 });
 

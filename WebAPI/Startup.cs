@@ -89,6 +89,11 @@ namespace WebAPI
                     builder.AddRequirements(new PermissionRequirement(Permissions.UserPermissions.TestPermission));
                 });
 
+                options.AddPolicy(Permissions.RolePermissions.ListPermissions, builder =>
+                {
+                    builder.AddRequirements(new PermissionRequirement(Permissions.RolePermissions.ListPermissions));
+                });
+
             });
         }
 
