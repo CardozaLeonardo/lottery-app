@@ -12,6 +12,6 @@ namespace Domain.Entities
 
         [ForeignKey("PlayerRaffle")]
         public long PlayerRaffleId { get; set; }
-        public PlayerRaffle PlayerRaffle { get; set; }
+        public virtual PlayerRaffle PlayerRaffle { get; set; }
     }
 }
