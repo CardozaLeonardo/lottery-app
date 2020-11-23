@@ -21,7 +21,7 @@ namespace Application.Services
             var secretKey = _configuration.GetValue<string>("SecretKey");
             var key = Encoding.ASCII.GetBytes(secretKey);
 
-            var nameClaim = new Claim(ClaimTypes.NameIdentifier, username);
+            var nameClaim = new Claim(ClaimTypes.Name, username);
             ClaimsIdentity claimsIdentity = new ClaimsIdentity();
 
             claimsIdentity.AddClaim(nameClaim);

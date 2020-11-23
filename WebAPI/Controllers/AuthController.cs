@@ -66,8 +66,12 @@ namespace WebAPI.Controllers
         [Authorize]
         public IActionResult Me()
         {
+            var username = HttpContext.User.Identity.Name;
 
-            return Ok(HttpContext.User.Claims.ToArray()[0].Value);
+            var userModel = _userManager.GetByUsername(username);
+            var userOutput = _mapper.Map<UserQuery>(userModel);
+
+            return Ok(userOutput);
         }
 
         
