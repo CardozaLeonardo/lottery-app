@@ -6,23 +6,27 @@ using System.Text;
 
 namespace Persistence
 {
-    public class LotteryAppContext: DbContext
+    public class LotteryAppContext : DbContext
     {
-        
+
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserRole> UserRole { get; set; }
-        public DbSet<Permission> Permission { get; set;}
+        public DbSet<Permission> Permission { get; set; }
         public DbSet<RolePermission> RolePermission { get; set; }
- 
-        public LotteryAppContext(DbContextOptions<LotteryAppContext> options): base(options)
+        public DbSet<Player> Players { get; set; }
+        public DbSet<Raffle> Raffles { get; set; }
+        public DbSet<PlayerRaffle> PlayerRaffle { get; set; }
+        public DbSet<Winner> Winner { get; set; }
+
+        public LotteryAppContext(DbContextOptions<LotteryAppContext> options) : base(options)
         {
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserRole>()
-                .HasKey(ur => new {ur.UserId , ur.RoleId });
+                .HasKey(ur => new { ur.UserId, ur.RoleId });
 
             modelBuilder.Entity<UserRole>()
                 .HasOne(ur => ur.User)
@@ -49,6 +53,16 @@ namespace Persistence
              .HasOne(rp => rp.Permission)
              .WithMany(r => r.RolePermissions)
              .HasForeignKey(rp => rp.PermissionID);
+
+            modelBuilder.Entity<PlayerRaffle>()
+            .HasOne(pr => pr.Raffle)
+            .WithMany(r => r.PlayerRaffles)
+            .HasForeignKey(rp => rp.RaffleId);
+
+            modelBuilder.Entity<PlayerRaffle>()
+           .HasOne(pr => pr.Player)
+           .WithMany(p => p.RaffleTickets)
+           .HasForeignKey(rp => rp.PlayerId);
 
             modelBuilder.Seed();
         }
