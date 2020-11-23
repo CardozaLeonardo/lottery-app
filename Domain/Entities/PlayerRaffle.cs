@@ -18,5 +18,6 @@ namespace Domain.Entities
 
         public virtual Player Player { get; set; }
         public virtual Raffle Raffle { get; set; }
+        public virtual Winner Winner { get; set; }
     }
 }
