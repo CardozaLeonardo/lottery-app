@@ -15,6 +15,7 @@ namespace Domain.Entities
         public string Password { set; get; }
 
         public ICollection<UserRole> UserRoles { get; set; }
+        public virtual Player Player { get; set; }
 
         [NotMapped]
         public override long Key { get { return this.Id; } set { this.Id = value; } }

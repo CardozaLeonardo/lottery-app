@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence;
 
 namespace Persistence.Migrations
 {
     [DbContext(typeof(LotteryAppContext))]
-    partial class LotteryAppContextModelSnapshot : ModelSnapshot
+    [Migration("20201123064946_AddedModelsForRaffle")]
+    partial class AddedModelsForRaffle
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -327,8 +329,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("PlayerId");
 
-                    b.HasIndex("PlayerRaffleId")
-                        .IsUnique();
+                    b.HasIndex("PlayerRaffleId");
 
                     b.HasIndex("RaffleId");
 
@@ -396,8 +397,8 @@ namespace Persistence.Migrations
                         .HasForeignKey("PlayerId");
 
                     b.HasOne("Domain.Entities.PlayerRaffle", "PlayerRaffle")
-                        .WithOne("Winner")
-                        .HasForeignKey("Domain.Entities.Winner", "PlayerRaffleId")
+                        .WithMany()
+                        .HasForeignKey("PlayerRaffleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

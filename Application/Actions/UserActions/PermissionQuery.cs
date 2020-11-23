@@ -4,9 +4,10 @@ using System.Text;
 
 namespace Application.Actions.UserActions
 {
-    public class RoleQuery:ApiAction
+    public class PermissionQuery
     {
-        public long Id { set; get; }
+        public long PermissionId { get; set; }
         public string Name { get; set; }
+        public string CodeName { get; set; }
     }
 }

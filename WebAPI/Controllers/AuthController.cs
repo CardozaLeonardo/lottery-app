@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
@@ -79,8 +80,17 @@ namespace WebAPI.Controllers
         [Authorize(Permissions.UserPermissions.TestPermission)]
         public IActionResult Test()
         {
+            Debug.Print(HttpContext.User.Identity.Name);
             return Content("ok");
         }
+
+        [Route("[action]")]
+        [Authorize]
+        public IActionResult Me()
+        {
+            return Ok();
+        }
+
 
     }
 }

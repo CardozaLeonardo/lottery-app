@@ -70,5 +70,11 @@ namespace WebAPI.Controllers
             return Created("/user", userOutput);
 
         }
+
+        /*[Route("me")]
+        [HttpGet]
+        public async Task<ActionResult<>>*/
+
+
     }
 }
