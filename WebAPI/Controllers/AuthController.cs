@@ -84,12 +84,7 @@ namespace WebAPI.Controllers
             return Content("ok");
         }
 
-        [Route("[action]")]
-        [Authorize]
-        public IActionResult Me()
-        {
-            return Ok();
-        }
+        
 
 
     }
