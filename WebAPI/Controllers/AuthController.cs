@@ -29,20 +29,24 @@ namespace WebAPI.Controllers
         private readonly IConfiguration _configuration;
         private readonly IUserManager _userManager;
         private readonly IHashingService _hashingService;
+        private readonly IJwtService _jwtService;
+        private readonly IMapper _mapper;
 
-        public AuthController(IConfiguration configuration , IObjectFactory factory, IMapper mapper, IHashingService hashingService)
+        public AuthController(IConfiguration configuration , IObjectFactory factory, 
+            IMapper mapper, IHashingService hashingService, IJwtService jwtService)
         {
             _configuration = configuration;
             _userManager = factory.Resolve<IUserManager>();
             _hashingService = hashingService;
+            _jwtService = jwtService;
+            _mapper = mapper;
         }
 
         [HttpPost]
         [Route("[action]")]
         public IActionResult Login(AuthCommand authCommand)
         {
-            var secretKey = _configuration.GetValue<string>("SecretKey");
-            var key = Encoding.ASCII.GetBytes(secretKey);
+            
 
             User user = _userManager.GetByUsernameOrEmail(authCommand.Username);
 
@@ -52,26 +56,25 @@ namespace WebAPI.Controllers
             if (!_hashingService.VerifyPassword(authCommand.Password, user.Password))
                 return Unauthorized(new { message = "Username or Password incorrect"});
 
-            var nameClaim = new Claim(ClaimTypes.Name, user.Username);
-            ClaimsIdentity claimsIdentity = new ClaimsIdentity();
-
-            claimsIdentity.AddClaim(nameClaim);
-
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = claimsIdentity,
-                Expires = DateTime.UtcNow.AddDays(30),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var createdToken = tokenHandler.CreateToken(tokenDescriptor);
-
             return Ok(new
             {
-                Token = tokenHandler.WriteToken(createdToken)
+                Token = _jwtService.CreateToken(user.Username)
             }) ; 
         }
+
+        [HttpGet]
+        [Route("[action]")]
+        [Authorize]
+        public IActionResult Me()
+        {
+            var username = HttpContext.User.Identity.Name;
+
+            var userModel = _userManager.GetByUsername(username);
+            var userOutput = _mapper.Map<UserQuery>(userModel);
+
+            return Ok(userOutput);
+        }
+
         
         [Route("[action]")]
         [Authorize(Permissions.UserPermissions.TestPermission)]
@@ -81,12 +84,7 @@ namespace WebAPI.Controllers
             return Content("ok");
         }
 
-        [Route("[action]")]
-        [Authorize]
-        public IActionResult Me()
-        {
-            return Ok();
-        }
+        
 
 
     }
