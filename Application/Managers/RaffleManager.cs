@@ -1,5 +1,4 @@
-﻿using Application.Actions.RaffleActions;
-using Application.Dto;
+﻿using Application.Dto;
 using Domain.Entities;
 using Domain.Managers;
 using Persistence;
