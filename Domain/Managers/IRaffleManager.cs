@@ -9,5 +9,6 @@ namespace Domain.Managers
     public interface IRaffleManager:IBaseManager<Raffle>
     {
         BetAttemptResult AddBetToRaffle(BetAttemptStart bet);
+        List<Winner> GetRaffleWinners(long raffleId);
     }
 }
