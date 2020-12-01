@@ -25,6 +25,7 @@ namespace Application
                 Container.AddExtension(new Diagnostic());
                 Container.RegisterSingleton<IUserManager, UserManager>(new InjectionConstructor(_context));
                 Container.RegisterSingleton<IRoleManager, RoleManager>(new InjectionConstructor(_context));
+                Container.RegisterSingleton<IRaffleManager, RaffleManager>(new InjectionConstructor(_context));
             }
             catch(Exception e)
             {

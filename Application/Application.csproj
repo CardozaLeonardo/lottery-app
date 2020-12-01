@@ -22,4 +22,8 @@
     <PackageReference Include="Unity" Version="5.11.7" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Actions\RaffleActions\" />
+  </ItemGroup>
+
 </Project>
