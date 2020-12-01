@@ -88,13 +88,20 @@ namespace Application.Managers
 
                 foreach (var winnerTicket in winnerPlayerTickets)
                 {
-                    winners.Add(new Winner
+                    Winner winner = new Winner
                     {
                         AmountEarned = winnerTicket.BetAmount * currentRaffle.WinMultiplier,
                         PlayerRaffleId = winnerTicket.Id
-                    });
+                    };
+
+                    winners.Add(winner);
+                    _context.Winner.Add(winner);
                 }
 
+                currentRaffle.IsActive = false;
+                currentRaffle.EndDate = DateTime.Now;
+
+                _context.SaveChangesAsync();
                 return winners;
             }
 
