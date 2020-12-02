@@ -29,6 +29,8 @@ namespace Application.Actions.UserActions
         [MinLength(8)]
         [MaxLength(40)]
         public string Password { get; set; }
+
+        public int RoleId { get; set; }
         
     }
 }

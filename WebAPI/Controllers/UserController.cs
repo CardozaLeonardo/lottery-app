@@ -18,11 +18,13 @@ namespace WebAPI.Controllers
     public class UserController : BaseController<User, CreateUserCommand, UserQuery>
     {
         private readonly IUserManager _userManager;
+        private readonly IRoleManager _roleManager;
         private readonly IHashingService _hashingService;
 
         public UserController(IObjectFactory factory, IMapper mapper, IHashingService hashingService) : base()
         {
             _userManager = factory.Resolve<IUserManager>();
+            _roleManager = factory.Resolve<IRoleManager>();
             _manager = factory.Resolve<IUserManager>();
             _mapper = mapper;
             _hashingService = hashingService;
@@ -32,6 +34,16 @@ namespace WebAPI.Controllers
         public override async Task<ActionResult<User>> Post(CreateUserCommand item)
         {
             var user = _userManager.GetByEmail(item.Email);
+            var role = _roleManager.Get(item.RoleId);
+
+            if(role == null)
+            {
+                return Conflict(new { 
+                    Message = "This role doesn't exist",
+                    Field =  "roleId"
+                });
+            }
+
 
             if(user != null)
             {
@@ -59,14 +71,11 @@ namespace WebAPI.Controllers
 
             var hashPassword = _hashingService.HashPassword(userModel.Password);
             userModel.Password = hashPassword;
-
             await _userManager.Add(userModel);
+            await _roleManager.AddUserToRole(userModel.Id, item.RoleId);
 
             var userOutput = _mapper.Map<UserQuery>(userModel);
 
-
-
-            //return Ok("Created with Id: " + userModel.Id);
             return Created("/user", userOutput);
 
         }
