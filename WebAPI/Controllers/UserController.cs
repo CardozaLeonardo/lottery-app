@@ -34,7 +34,7 @@ namespace WebAPI.Controllers
         public override async Task<ActionResult<User>> Post(CreateUserCommand item)
         {
             var user = _userManager.GetByEmail(item.Email);
-            var role = _roleManager.Get(item.RoleId);
+            var role = await _roleManager.Get(item.RoleId);
 
             if(role == null)
             {
