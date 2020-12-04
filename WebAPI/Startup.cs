@@ -43,7 +43,7 @@ namespace WebAPI
             services.AddCors(
                 options =>
                 {
-                    options.AddPolicy(name: MyAllowedSpecificOrigins, builder => {builder.WithOrigins("http://localhost/");});
+                    options.AddPolicy(name: MyAllowedSpecificOrigins, builder => {builder.WithOrigins("http://localhost:5001/", "http://localhost:3000/");});
                 }
             );
 
