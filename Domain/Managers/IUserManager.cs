@@ -10,7 +10,9 @@ namespace Domain.Managers
     {
         public User GetByUsernameOrEmail(string term);
         public User GetByUsername(string username);
+        public User GetByUsernameWithRole(string username);
         public User GetByEmail(string email);
         public User GetByUsernameOrEmailWithRole(string term);
+        public User GetWithRole(long id);
     }
 }

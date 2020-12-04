@@ -69,8 +69,8 @@ namespace WebAPI.Controllers
         {
             var username = HttpContext.User.Identity.Name;
 
-            var userModel = _userManager.GetByUsername(username);
-            var userOutput = _mapper.Map<UserQuery>(userModel);
+            var userModel = _userManager.GetByUsernameWithRole(username);
+            var userOutput = _mapper.Map<GetUserQuery>(userModel);
 
             return Ok(userOutput);
         }

@@ -37,5 +37,15 @@ namespace Application.Managers
         {
             return _dbSet.Include(u => u.UserRoles).ThenInclude(ur => ur.Role).FirstOrDefault(p => p.Username == term || p.Email == term);
         }
+
+        public User GetByUsernameWithRole(string username)
+        {
+            return _dbSet.Include(u => u.UserRoles).ThenInclude(ur => ur.Role).FirstOrDefault(p => p.Username == username);
+        }
+
+        public virtual User GetWithRole(long id)
+        {
+            return _dbSet.Include(u => u.UserRoles).ThenInclude(ur => ur.Role).FirstOrDefault(p => p.Id == id);
+        }
     }
 }
