@@ -30,6 +30,8 @@ namespace Application.Actions.UserActions
         [MaxLength(40)]
         public string Password { get; set; }
 
+        [Required]
+        [Range(1,2)]
         public int RoleId { get; set; }
         
     }
