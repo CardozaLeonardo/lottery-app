@@ -40,7 +40,12 @@ namespace WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddCors();
+            services.AddCors(
+                options =>
+                {
+                    options.AddPolicy(name: MyAllowedSpecificOrigins, builder => {builder.WithOrigins("http://localhost/");});
+                }
+            );
 
             /*services.AddCors(options =>
             {
@@ -115,9 +120,11 @@ namespace WebAPI
 
             //app.UseMiddleware<CorsMiddleware>();
             //app.UseCorsMiddleware();
-            app.UseCors(
+            /*app.UseCors(
                 options => options.SetIsOriginAllowed(x => _ = true).AllowAnyMethod().AllowAnyHeader().AllowCredentials()
-            );
+            );*/
+
+            app.UseCors(MyAllowedSpecificOrigins);
 
             app.UseEndpoints(endpoints =>
             {
