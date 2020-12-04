@@ -28,6 +28,7 @@ namespace WebAPI.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly IUserManager _userManager;
+        private readonly IRoleManager _roleManager;
         private readonly IHashingService _hashingService;
         private readonly IJwtService _jwtService;
         private readonly IMapper _mapper;
@@ -37,6 +38,7 @@ namespace WebAPI.Controllers
         {
             _configuration = configuration;
             _userManager = factory.Resolve<IUserManager>();
+            _roleManager = factory.Resolve<IRoleManager>();
             _hashingService = hashingService;
             _jwtService = jwtService;
             _mapper = mapper;
@@ -71,6 +73,13 @@ namespace WebAPI.Controllers
 
             var userModel = _userManager.GetByUsernameWithRole(username);
             var userOutput = _mapper.Map<GetUserQuery>(userModel);
+
+            userOutput.Roles = new List<RoleQuery>();
+
+            foreach(var userRole in userModel.UserRoles)
+            {
+                userOutput.Roles.Add(_mapper.Map<RoleQuery>(userRole.Role));
+            }
 
             return Ok(userOutput);
         }
