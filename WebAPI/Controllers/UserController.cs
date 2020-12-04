@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Application;
 using Application.Actions.UserActions;
@@ -7,6 +9,7 @@ using AutoMapper;
 using Domain.Entities;
 using Domain.Managers;
 using Domain.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -28,6 +31,67 @@ namespace WebAPI.Controllers
             _manager = factory.Resolve<IUserManager>();
             _mapper = mapper;
             _hashingService = hashingService;
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("[action]")]
+        public virtual async Task<ActionResult<IEnumerable<UserQuery>>> List(int? pageNumber, int pageSize = _defaultPageSize)
+        {
+            try
+            {
+                IQueryable<User> query = _userManager.List();
+                var itemCount = query.Count();
+                int? pages = GetPages(itemCount, pageNumber, pageSize);
+
+                if (pageNumber.HasValue)
+                    query = Paginate(query, pageNumber.Value);
+                else
+                {
+                    Paginate(query, 1);
+                }
+
+                var items = query.ToList();
+
+                var userItems = _mapper.Map<IEnumerable<UserQuery>>(items);
+
+                return Ok(new
+                {
+                    Total = itemCount,
+                    Pages = pages,
+                    Data = userItems
+                });
+
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                LogManager.Current.Log.Error(e);
+                return StatusCode(500, "Internal Server Error " + e.Message);
+            }
+        }
+
+        [HttpGet("{id}")]
+        public override async Task<ActionResult<User>> Get(int id)
+        {
+            try
+            {
+                var item = _userManager.GetWithRole(Convert.ToInt64(id));
+
+                if (item == null)
+                {
+                    return NotFound();
+                }
+
+                
+                return item;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                LogManager.Current.Log.Error(e);
+                return StatusCode(500, "Internal Server Error " + e.Message);
+            }
         }
 
         [HttpPost]
