@@ -43,7 +43,7 @@ namespace WebAPI
             services.AddCors(
                 options =>
                 {
-                    options.AddPolicy(name: MyAllowedSpecificOrigins, builder => {builder.WithOrigins("http://localhost:5001/", "http://localhost:3000/");});
+                    options.AddPolicy(name: MyAllowedSpecificOrigins, builder => {builder.WithOrigins("http://localhost:5001", "http://localhost:3000");});
                 }
             );
 
@@ -111,6 +111,8 @@ namespace WebAPI
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(MyAllowedSpecificOrigins);
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -124,7 +126,6 @@ namespace WebAPI
                 options => options.SetIsOriginAllowed(x => _ = true).AllowAnyMethod().AllowAnyHeader().AllowCredentials()
             );*/
 
-            app.UseCors(MyAllowedSpecificOrigins);
 
             app.UseEndpoints(endpoints =>
             {
