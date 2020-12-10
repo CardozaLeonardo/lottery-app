@@ -1,10 +1,11 @@
 using Application;
 using AutoMapper;
+using Domain.Managers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-   /* [Route("api/[controller]")]
+   [Route("api/[controller]")]
     [ApiController]
     public class RaffleController : BaseController<Raffle, CreateRaffleCommand, RaffleQuery>
     {
@@ -16,5 +17,5 @@ namespace WebAPI.Controllers
             _roleManager = factory.Resolve<IRoleManager>();
         }
 
-    }*/
+    }
 }

@@ -1,6 +1,8 @@
 ﻿using Application.Dto;
+using Domain.Dtos;
 using Domain.Entities;
 using Domain.Managers;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 using System;
 using System.Collections.Generic;
@@ -32,7 +34,9 @@ namespace Application.Managers
                 {
                     _context.PlayerRaffle.Add(new PlayerRaffle {
                         PlayerId = bet.PlayerId,
-                        RaffleId = raffle.Id
+                        RaffleId = raffle.Id,
+                        BetAmount = bet.Bet,
+                        SelectedNumber = bet.BetNumber
                     });
                 }
 
@@ -69,7 +73,7 @@ namespace Application.Managers
 
         }
 
-        public List<Winner> GetRaffleWinners(long raffleId)
+        public List<Winner> RunRaffle(long raffleId)
         {
             List<int> numbers = new List<int>();
             Raffle currentRaffle = _dbSet.Find(raffleId);
@@ -117,6 +121,75 @@ namespace Application.Managers
                 randomSortTable[random.NextDouble()] = someType;
 
            return randomSortTable.OrderBy(KVP => KVP.Key).Take(maxCount).Select(KVP => KVP.Value);
+        }
+
+        public List<RaffleResult> GetRaffleWinners(long raffleId)
+        {
+            bool raffle = _dbSet.Any(p => p.Id == raffleId);
+
+            if (raffle)
+            {
+               List<Winner> winners = _context.Winner.Include(w => w.PlayerRaffle).ThenInclude( pr => pr.Player).ThenInclude(p => p.User).Where(p => p.PlayerRaffle.RaffleId == raffleId).ToList();
+               List<RaffleResult> raffleResult = new List<RaffleResult>();
+
+                foreach (var winner in winners)
+                {
+                    raffleResult.Add(new RaffleResult
+                    {
+                        PlayerId = winner.PlayerRaffle.PlayerId,
+                        RaffleId = winner.PlayerRaffle.RaffleId,
+                        PlayerFirstName = winner.PlayerRaffle.Player.User.Name,
+                        PlayerLastName = winner.PlayerRaffle.Player.User.LastName,
+                        BetAmount = winner.PlayerRaffle.BetAmount,
+                        BetNumber = winner.PlayerRaffle.SelectedNumber,
+                        WinAmount = winner.AmountEarned,
+                        BetResult = true
+                    });
+                }
+
+                return raffleResult;
+            }
+
+            return null;
+
+        }
+
+        public RaffleResult GetPlayerResult(long playerId, long raffleId, int raffleNumber)
+        {
+            bool raffle = _dbSet.Any(p => p.Id == raffleId);
+
+            if (raffle)
+            {
+                PlayerRaffle playerRaffle = _context.PlayerRaffle.Include(pr => pr.Winner).Where(pr => pr.PlayerId == playerId && pr.RaffleId == raffleId && pr.SelectedNumber == raffleNumber).FirstOrDefault();
+                int winAmount = 0;
+
+                if (playerRaffle.Winner != null)
+                    winAmount = playerRaffle.Winner.AmountEarned;
+
+                return new RaffleResult
+                {
+                    PlayerId = playerId,
+                    RaffleId = raffleId,
+                    BetAmount = playerRaffle.BetAmount,
+                    BetNumber = playerRaffle.SelectedNumber,
+                    WinAmount = winAmount,
+                    BetResult = playerRaffle.Winner != null ?
+                    true : false
+                };
+            }
+
+            return null;
+        }
+
+
+        public BetAttemptResult EditBet(long playerId, long raffleId, int raffleNumber ,int newAmount)
+        {
+           PlayerRaffle playerRaffle = _context.PlayerRaffle.Where(pr => pr.PlayerId == raffleId && pr.PlayerId == playerId && pr.SelectedNumber == raffleNumber).FirstOrDefault();
+            playerRaffle.BetAmount = newAmount;
+
+            _context.SaveChanges();
+
+            return new BetAttemptResult {Message = "Bet updated" ,  Approved = true};
         }
 
 
