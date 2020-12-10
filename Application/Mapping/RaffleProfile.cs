@@ -13,6 +13,7 @@ namespace Application.Mapping
     {
         public RaffleProfile(){
             CreateMap<CreateRaffleCommand, Raffle>();
+            CreateMap<Raffle, RaffleQuery>();
             CreateMap<CreateBetCommand, BetAttemptStart>();
             CreateMap<BetAttemptResult, BetAttemptResultQuery>();
             CreateMap<RaffleResult, RaffleResultQuery>();
