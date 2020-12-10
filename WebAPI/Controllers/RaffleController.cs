@@ -1,5 +1,7 @@
 using Application;
+using Application.Actions.RaffleActions;
 using AutoMapper;
+using Domain.Entities;
 using Domain.Managers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,10 +13,10 @@ namespace WebAPI.Controllers
     {
         private readonly IRaffleManager _roleManager;
 
-        public RoleController(IObjectFactory factory, IMapper mapper) : base()
+        public RaffleController(IObjectFactory factory, IMapper mapper) : base()
         {
             _mapper = mapper;
-            _roleManager = factory.Resolve<IRoleManager>();
+            _roleManager = factory.Resolve<IRaffleManager>();
         }
 
     }

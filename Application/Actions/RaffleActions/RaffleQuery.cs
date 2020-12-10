@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Application.Actions.RaffleActions
 {
-    public class RaffleQuery
+    public class RaffleQuery: ApiAction
     {
         public long Id { get; set; }
         public string Name { get; set; }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Application.Actions.RaffleActions
 {
-    public class RaffleCommand
+    public class CreateRaffleCommand:ApiAction
     {
         [Required]
         public string Name { get; set; }
