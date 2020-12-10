@@ -73,10 +73,11 @@ namespace Application.Managers
 
         }
 
-        public List<Winner> RunRaffle(long raffleId)
+        public List<RaffleResult> RunRaffle(long raffleId)
         {
             List<int> numbers = new List<int>();
             Raffle currentRaffle = _dbSet.Find(raffleId);
+            List<RaffleResult> raffleResult = new List<RaffleResult>();
 
             if (currentRaffle != null)
             {
@@ -88,7 +89,7 @@ namespace Application.Managers
                 }
 
                 IEnumerable<int> winnerNumbers = GetRandomNumber(numbers, _amountOfWinners);
-                IQueryable<PlayerRaffle> winnerPlayerTickets = _context.PlayerRaffle.Where(p => p.RaffleId == raffleId && winnerNumbers.Contains(p.SelectedNumber));
+                IQueryable<PlayerRaffle> winnerPlayerTickets = _context.PlayerRaffle.Include(pr => pr.Player).ThenInclude(p => p.User).Where(p => p.RaffleId == raffleId && winnerNumbers.Contains(p.SelectedNumber));
 
                 foreach (var winnerTicket in winnerPlayerTickets)
                 {
@@ -100,13 +101,26 @@ namespace Application.Managers
 
                     winners.Add(winner);
                     _context.Winner.Add(winner);
+
+                    raffleResult.Add(new RaffleResult
+                    {
+                        PlayerId = winnerTicket.PlayerId,
+                        RaffleId = winnerTicket.RaffleId,
+                        PlayerFirstName = winnerTicket.Player.User.Name,
+                        PlayerLastName = winnerTicket.Player.User.LastName,
+                        BetAmount = winnerTicket.BetAmount,
+                        BetNumber = winnerTicket.SelectedNumber,
+                        WinAmount = winner.AmountEarned,
+                        BetResult = true
+                    });
+
                 }
 
                 currentRaffle.IsActive = false;
                 currentRaffle.EndDate = DateTime.Now;
 
                 _context.SaveChangesAsync();
-                return winners;
+                return raffleResult;
             }
 
             return null;

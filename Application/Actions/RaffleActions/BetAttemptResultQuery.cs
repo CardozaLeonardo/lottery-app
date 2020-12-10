@@ -4,8 +4,9 @@ using System.Text;
 
 namespace Application.Actions.RaffleActions
 {
-    public class WinnerQuery
+    public class BetAttemptResultQuery
     {
-
+        public string Message { get; set; }
+        public bool Approved { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace Domain.Managers
     public interface IRaffleManager:IBaseManager<Raffle>
     {
         BetAttemptResult AddBetToRaffle(BetAttemptStart bet);
-        List<Winner> RunRaffle(long raffleId);
+        List<RaffleResult> RunRaffle(long raffleId);
         List<RaffleResult> GetRaffleWinners(long raffleId);
         RaffleResult GetPlayerResult(long playerId, long raffleId, int raffleNumber);
         BetAttemptResult EditBet(long playerId, long raffleId, int raffleNumber ,int newAmount);

@@ -1,5 +1,7 @@
 ﻿using Application.Actions.RaffleActions;
+using Application.Dto;
 using AutoMapper;
+using Domain.Dtos;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -11,6 +13,9 @@ namespace Application.Mapping
     {
         public RaffleProfile(){
             CreateMap<CreateRaffleCommand, Raffle>();
+            CreateMap<CreateBetCommand, BetAttemptStart>();
+            CreateMap<BetAttemptResult, BetAttemptResultQuery>();
+            CreateMap<RaffleResult, RaffleResultQuery>();
         }
     }
 }
