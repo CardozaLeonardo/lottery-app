@@ -116,7 +116,7 @@ namespace Application.Managers
                         RaffleId = winnerTicket.RaffleId,
                         PlayerFirstName = winnerTicket.Player.User.Name,
                         PlayerLastName = winnerTicket.Player.User.LastName,
-                        BetAmount = winnerTicket.BetAmount,
+                        Bet = winnerTicket.BetAmount,
                         BetNumber = winnerTicket.SelectedNumber,
                         WinAmount = winner.AmountEarned,
                         BetResult = true
@@ -193,7 +193,7 @@ namespace Application.Managers
                         RaffleId = winner.PlayerRaffle.RaffleId,
                         PlayerFirstName = winner.PlayerRaffle.Player.User.Name,
                         PlayerLastName = winner.PlayerRaffle.Player.User.LastName,
-                        BetAmount = winner.PlayerRaffle.BetAmount,
+                        Bet = winner.PlayerRaffle.BetAmount,
                         BetNumber = winner.PlayerRaffle.SelectedNumber,
                         WinAmount = winner.AmountEarned,
                         BetResult = true
@@ -254,7 +254,7 @@ namespace Application.Managers
                     {
                         PlayerId = playerId,
                         RaffleId = raffleId,
-                        BetAmount = playerRaffle.BetAmount,
+                        Bet = playerRaffle.BetAmount,
                         BetNumber = playerRaffle.SelectedNumber,
                         WinAmount = winAmount,
                         BetResult = playerRaffle.Winner != null ?
@@ -291,7 +291,7 @@ namespace Application.Managers
                         RaffleId = raffleId,
                         PlayerFirstName = playerRaffle.Player.User.Name,
                         PlayerLastName = playerRaffle.Player.User.LastName,
-                        BetAmount = playerRaffle.BetAmount,
+                        Bet = playerRaffle.BetAmount,
                         BetNumber = playerRaffle.SelectedNumber,
                         WinAmount = winAmount,
                         BetResult = playerRaffle.Winner != null ?
