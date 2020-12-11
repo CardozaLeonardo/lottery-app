@@ -10,6 +10,7 @@ namespace Application.Actions.RaffleActions
         public string Name { get; set; }
         public bool IsActive { get; set; }
         public int WinMultiplier { get; set; }
+        public int WinningNumber { get; set; }
         public int MaxBets { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
