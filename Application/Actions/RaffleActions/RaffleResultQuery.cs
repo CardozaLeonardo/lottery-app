@@ -11,7 +11,7 @@ namespace Application.Actions.RaffleActions
         public string PlayerFirstName { get; set; }
         public string PlayerLastName { get; set; }
         public bool BetResult { get; set; }
-        public int BetAmount { get; set; }
+        public int Bet { get; set; }
         public int WinAmount { get; set; }
         public int BetNumber { get; set; }
     }
