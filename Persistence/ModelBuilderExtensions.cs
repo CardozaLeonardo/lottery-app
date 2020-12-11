@@ -26,6 +26,34 @@ namespace Persistence
                }
            );
 
+            modelBuilder.Entity<User>().HasData(
+            new User
+            {   Id = 100,
+                Name = "Jorge",
+                LastName = "Morales",
+                Password = "$2a$11$tBDwzGx2ogUlt826DdJ6ouWFwbeZdU.x.8tL1xGlIg7B/T4cNfQMG",
+                Email = "jorgeProfe@gmail.com",
+                Username = "jorginho777",
+            }
+           );
+
+            modelBuilder.Entity<Player>().HasData(
+            new Player
+            {
+                Id = 100,
+                UserId = 100,
+                Identification = "090-250989-1006U"
+            }
+           );
+
+            modelBuilder.Entity<UserRole>().HasData(
+            new UserRole
+            {   UserId = 100,
+                RoleId = 1
+            }
+           );
+
+
             modelBuilder.Entity<Permission>().HasData(
                   new Permission
                   {
