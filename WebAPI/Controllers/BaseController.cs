@@ -98,7 +98,7 @@ namespace WebAPI.Controllers
                     return NotFound();
                 }
 
-                return Ok();
+                return Ok(new {message = "Updated" });
             }
             catch (Exception e)
             {
@@ -119,7 +119,8 @@ namespace WebAPI.Controllers
                 //return CreatedAtAction("Post", new { id = item.Key }, item);
                 var userModel = _mapper.Map<TEntity>(item);
                 await _manager.Add(userModel);
-                return Ok("Created");
+                return Ok(userModel);
+                //return Created()
             }
             catch (Exception e)
             {
@@ -140,7 +141,9 @@ namespace WebAPI.Controllers
                     return NotFound();
                 }
 
-                return Ok();
+                return Ok(new {
+                    message = "Deleted"
+                });
             }
             catch (Exception e)
             {
