@@ -69,13 +69,13 @@ namespace WebAPI.Controllers
         [HttpGet]
         [Route("[action]")]
         [Authorize]
-        public IActionResult Me()
+        public async Task<IActionResult> Me()
         {
             var username = HttpContext.User.Identity.Name;
 
             var userModel = _userManager.GetByUsernameWithRole(username);
             var userOutput = _mapper.Map<GetUserQuery>(userModel);
-            var player = _playerManager.Get(userOutput.Id);
+            var player = await _playerManager.Get(userOutput.Id);
 
             userOutput.Roles = new List<RoleQuery>();
 
