@@ -12,7 +12,8 @@ namespace Domain.Managers
         BetAttemptResult AddBetToRaffle(BetAttemptStart bet);
         List<RaffleResult> RunRaffle(long raffleId);
         List<RaffleResult> GetRaffleWinners(long raffleId);
-        RaffleResult GetPlayerResult(long playerId, long raffleId, int raffleNumber);
+        RaffleResult GetPlayerNumberResult(long playerId, long raffleId, int raffleNumber);
         BetAttemptResult EditBet(long playerId, long raffleId, int raffleNumber ,int newAmount);
+        List<RaffleResult> GetPlayerResults(long playerId, long raffleId);
     }
 }

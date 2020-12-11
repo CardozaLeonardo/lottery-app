@@ -29,6 +29,7 @@ namespace WebAPI.Controllers
         private readonly IConfiguration _configuration;
         private readonly IUserManager _userManager;
         private readonly IRoleManager _roleManager;
+        private readonly IPlayerManager _playerManager;
         private readonly IHashingService _hashingService;
         private readonly IJwtService _jwtService;
         private readonly IMapper _mapper;
@@ -39,6 +40,7 @@ namespace WebAPI.Controllers
             _configuration = configuration;
             _userManager = factory.Resolve<IUserManager>();
             _roleManager = factory.Resolve<IRoleManager>();
+            _playerManager = factory.Resolve<IPlayerManager>();
             _hashingService = hashingService;
             _jwtService = jwtService;
             _mapper = mapper;
@@ -73,6 +75,7 @@ namespace WebAPI.Controllers
 
             var userModel = _userManager.GetByUsernameWithRole(username);
             var userOutput = _mapper.Map<GetUserQuery>(userModel);
+            var player = _playerManager.Get(userOutput.Id);
 
             userOutput.Roles = new List<RoleQuery>();
 
@@ -81,10 +84,12 @@ namespace WebAPI.Controllers
                 userOutput.Roles.Add(_mapper.Map<RoleQuery>(userRole.Role));
             }
 
+            if (player != null)
+                userOutput.Player = _mapper.Map<PlayerQuery>(player); 
+
             return Ok(userOutput);
         }
 
-        
         [Route("[action]")]
         [Authorize(Permissions.UserPermissions.TestPermission)]
         public IActionResult Test()

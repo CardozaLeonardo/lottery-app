@@ -4,6 +4,7 @@ using Application.Dto;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Managers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -28,6 +29,7 @@ namespace WebAPI.Controllers
         [Route("add-bet")]
         public ActionResult<BetAttemptResultQuery> AddBet(CreateBetCommand betCommand)
         {
+            betCommand.PlayerId = _userManager.GetByUsernameOrEmailWithRole(HttpContext.User.Identity.Name).Player.Id;
             BetAttemptResultQuery result = _mapper.Map<BetAttemptResultQuery>(_raffleManager.AddBetToRaffle(_mapper.Map<BetAttemptStart>(betCommand)));
             return Ok(result);
         }
@@ -35,21 +37,30 @@ namespace WebAPI.Controllers
         [Route("run-raffle/{raffleId}")]
         public ActionResult<BetAttemptResultQuery> RunRaffle(long raffleId)
         {
-            BetAttemptResultQuery result = _mapper.Map<BetAttemptResultQuery>(_raffleManager.RunRaffle(raffleId));
+            List<RaffleResultQuery> result = _mapper.Map<List<RaffleResultQuery>>(_raffleManager.RunRaffle(raffleId));
             return Ok(result);
         }
 
         [Route("get-raffle-winners/{raffleId}")]
         public ActionResult<List<RaffleResultQuery>> GetRaffleWinners(long raffleId)
         {
-            List<BetAttemptResultQuery> result = _mapper.Map<List<BetAttemptResultQuery>>(_raffleManager.GetRaffleWinners(raffleId));
+            List<RaffleResultQuery> result = _mapper.Map<List<RaffleResultQuery>>(_raffleManager.GetRaffleWinners(raffleId));
+            return Ok(result);
+        }
+
+        [Route("get-player-result/{raffleId}/{raffleNumber}")]
+        public ActionResult<List<RaffleResultQuery>> GetPlayerNumberResult(long raffleId, int raffleNumber)
+        {
+            User user = _userManager.GetByUsernameOrEmailWithRole(HttpContext.User.Identity.Name);
+            List<BetAttemptResultQuery> result = _mapper.Map<List<BetAttemptResultQuery>>(_raffleManager.GetPlayerNumberResult(user.Player.Id , raffleId, raffleNumber));
             return Ok(result);
         }
 
         [Route("get-player-result/{raffleId}")]
-        public ActionResult<List<RaffleResultQuery>> GetPlayerResult(long raffleId)
+        public ActionResult<List<RaffleResultQuery>> GetPlayerResults(long raffleId)
         {
-            List<BetAttemptResultQuery> result = _mapper.Map<List<BetAttemptResultQuery>>(_raffleManager.GetRaffleWinners(raffleId));
+            User user = _userManager.GetByUsernameOrEmailWithRole(HttpContext.User.Identity.Name);
+            List<BetAttemptResultQuery> result = _mapper.Map<List<BetAttemptResultQuery>>(_raffleManager.GetPlayerResults(user.Player.Id, raffleId));
             return Ok(result);
         }
 
@@ -58,7 +69,7 @@ namespace WebAPI.Controllers
         {
 
             User user = _userManager.GetByUsernameOrEmailWithRole(HttpContext.User.Identity.Name);
-            List<BetAttemptResultQuery> result = _mapper.Map<List<BetAttemptResultQuery>>(_raffleManager.EditBet(user.Id, raffleId , betNumber , betAmount));
+            List<BetAttemptResultQuery> result = _mapper.Map<List<BetAttemptResultQuery>>(_raffleManager.EditBet(user.Player.Id, raffleId , betNumber , betAmount));
             return Ok(result);
         }
 

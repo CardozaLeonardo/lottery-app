@@ -38,6 +38,8 @@ namespace Application.Managers
                         BetAmount = bet.Bet,
                         SelectedNumber = bet.BetNumber
                     });
+
+                    _context.SaveChanges();
                 }
 
                 return checkValid;
@@ -79,7 +81,7 @@ namespace Application.Managers
             Raffle currentRaffle = _dbSet.Find(raffleId);
             List<RaffleResult> raffleResult = new List<RaffleResult>();
 
-            if (currentRaffle != null)
+            if (currentRaffle != null && currentRaffle.WinningNumber == 0)
             {
                 List<Winner> winners = new List<Winner>();
 
@@ -88,7 +90,10 @@ namespace Application.Managers
                     numbers.Add(i);
                 }
 
-                IEnumerable<int> winnerNumbers = GetRandomNumber(numbers, _amountOfWinners);
+                IList<int> winnerNumbers = GetRandomNumber(numbers, _amountOfWinners);
+
+                currentRaffle.WinningNumber = winnerNumbers[0];
+
                 IQueryable<PlayerRaffle> winnerPlayerTickets = _context.PlayerRaffle.Include(pr => pr.Player).ThenInclude(p => p.User).Where(p => p.RaffleId == raffleId && winnerNumbers.Contains(p.SelectedNumber));
 
                 foreach (var winnerTicket in winnerPlayerTickets)
@@ -119,14 +124,14 @@ namespace Application.Managers
                 currentRaffle.IsActive = false;
                 currentRaffle.EndDate = DateTime.Now;
 
-                _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return raffleResult;
             }
 
             return null;
         }
 
-        private IEnumerable<int> GetRandomNumber(IEnumerable<int> numbers, int maxCount)
+        private IList<int> GetRandomNumber(IEnumerable<int> numbers, int maxCount)
         {
             Random random = new Random(DateTime.Now.Millisecond);
             Dictionary<double, int> randomSortTable = new Dictionary<double, int>();
@@ -134,7 +139,7 @@ namespace Application.Managers
             foreach (int someType in numbers)
                 randomSortTable[random.NextDouble()] = someType;
 
-           return randomSortTable.OrderBy(KVP => KVP.Key).Take(maxCount).Select(KVP => KVP.Value);
+           return randomSortTable.OrderBy(KVP => KVP.Key).Take(maxCount).Select(KVP => KVP.Value).ToList();
         }
 
         public List<RaffleResult> GetRaffleWinners(long raffleId)
@@ -168,7 +173,7 @@ namespace Application.Managers
 
         }
 
-        public RaffleResult GetPlayerResult(long playerId, long raffleId, int raffleNumber)
+        public RaffleResult GetPlayerNumberResult(long playerId, long raffleId, int raffleNumber)
         {
             bool raffle = _dbSet.Any(p => p.Id == raffleId);
 
@@ -194,6 +199,38 @@ namespace Application.Managers
 
             return null;
         }
+
+        public List<RaffleResult> GetPlayerResult(long playerId, long raffleId)
+        {
+            bool raffle = _dbSet.Any(p => p.Id == raffleId);
+            List<RaffleResult> results = new List<RaffleResult>();
+
+            if (raffle)
+            {
+                List<PlayerRaffle> playerRaffles = _context.PlayerRaffle.Include(pr => pr.Winner).Where(pr => pr.PlayerId == playerId && pr.RaffleId == raffleId).ToList();
+                int winAmount = 0;
+
+                foreach(var playerRaffle in playerRaffles)
+                {
+                    if (playerRaffle.Winner != null)
+                        winAmount = playerRaffle.Winner.AmountEarned;
+
+                    results.Add(new RaffleResult
+                    {
+                        PlayerId = playerId,
+                        RaffleId = raffleId,
+                        BetAmount = playerRaffle.BetAmount,
+                        BetNumber = playerRaffle.SelectedNumber,
+                        WinAmount = winAmount,
+                        BetResult = playerRaffle.Winner != null ?
+                        true : false
+                    });
+                }
+            }
+
+            return null;
+        }
+
 
 
         public BetAttemptResult EditBet(long playerId, long raffleId, int raffleNumber ,int newAmount)

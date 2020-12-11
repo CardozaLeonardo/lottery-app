@@ -14,6 +14,10 @@ namespace Domain.Entities
         public int MaxBets { get; set; }
         public DateTime StartDate { get; set;}  
         public DateTime EndDate {get; set;}
+
+        /*for multiple numbers we would need to modify this*/
+        public int WinningNumber { get; set; }
+        
         public virtual ICollection<PlayerRaffle> PlayerRaffles { get; set; } 
         public virtual ICollection<Winner> Winners { get; set; }
 

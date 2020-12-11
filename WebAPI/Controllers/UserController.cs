@@ -23,12 +23,13 @@ namespace WebAPI.Controllers
         private readonly IUserManager _userManager;
         private readonly IRoleManager _roleManager;
         private readonly IHashingService _hashingService;
+        private readonly IPlayerManager _playerManager;
 
         public UserController(IObjectFactory factory, IMapper mapper, IHashingService hashingService) : base()
         {
             _userManager = factory.Resolve<IUserManager>();
+            _playerManager = factory.Resolve<IPlayerManager>();
             _roleManager = factory.Resolve<IRoleManager>();
-            _manager = factory.Resolve<IUserManager>();
             _mapper = mapper;
             _hashingService = hashingService;
         }
@@ -139,6 +140,12 @@ namespace WebAPI.Controllers
             await _roleManager.AddUserToRole(userModel.Id, item.RoleId);
 
             var userOutput = _mapper.Map<UserQuery>(userModel);
+
+            await _playerManager.Add(new Player
+            {
+                UserId = userModel.Id
+            });
+
 
             return Created("/user", userOutput);
 
