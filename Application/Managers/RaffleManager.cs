@@ -75,7 +75,7 @@ namespace Application.Managers
 
         }
 
-        public List<RaffleResult> RunRaffle(long raffleId)
+        public RaffleResultsWrapper RunRaffle(long raffleId)
         {
             List<int> numbers = new List<int>();
             Raffle currentRaffle = _dbSet.Find(raffleId);
@@ -125,10 +125,41 @@ namespace Application.Managers
                 currentRaffle.EndDate = DateTime.Now;
 
                 _context.SaveChanges();
-                return raffleResult;
+
+                if(raffleResult.Count == 0)
+                {
+                    return new RaffleResultsWrapper
+                    {
+                        RaffleResults = raffleResult,
+                        Amount = raffleResult.Count,
+                        Message = "No winners"
+                    };
+                }
+
+                return new RaffleResultsWrapper
+                {
+                    RaffleResults = raffleResult,
+                    Amount = raffleResult.Count,
+                    Message = "Success"
+                };
             }
 
-            return null;
+            var message = "Something went wrong";
+
+            if(currentRaffle == null)
+                message = "No raffle with this id";
+            else
+            {
+                if (currentRaffle.WinningNumber != 0)
+                    message = "Raffle already played";
+            }
+           
+
+            return new RaffleResultsWrapper
+            {
+                Message = message
+            };
+
         }
 
         private IList<int> GetRandomNumber(IEnumerable<int> numbers, int maxCount)
@@ -142,7 +173,7 @@ namespace Application.Managers
            return randomSortTable.OrderBy(KVP => KVP.Key).Take(maxCount).Select(KVP => KVP.Value).ToList();
         }
 
-        public List<RaffleResult> GetRaffleWinners(long raffleId)
+        public RaffleResultsWrapper GetRaffleWinners(long raffleId)
         {
             bool raffle = _dbSet.Any(p => p.Id == raffleId);
 
@@ -166,14 +197,34 @@ namespace Application.Managers
                     });
                 }
 
-                return raffleResult;
+                if (raffleResult.Count > 0)
+                {
+                    return new RaffleResultsWrapper
+                    {
+                        RaffleResults = raffleResult,
+                        Amount = raffleResult.Count,
+                        Message = "Success"
+                    };
+                }
+                else
+                {
+                    return new RaffleResultsWrapper
+                    {
+                        RaffleResults = raffleResult,
+                        Amount = raffleResult.Count,
+                        Message = "No winners in this raffle"
+                    };
+                } 
             }
 
-            return null;
+            return new RaffleResultsWrapper
+            {
+                Message = "No raffle found with this Id"
+            };
 
         }
 
-        public RaffleResult GetPlayerNumberResult(long playerId, long raffleId, int raffleNumber)
+        public RaffleResultWrapper GetPlayerNumberResult(long playerId, long raffleId, int raffleNumber)
         {
             bool raffle = _dbSet.Any(p => p.Id == raffleId);
 
@@ -182,25 +233,41 @@ namespace Application.Managers
                 PlayerRaffle playerRaffle = _context.PlayerRaffle.Include(pr => pr.Winner).Where(pr => pr.PlayerId == playerId && pr.RaffleId == raffleId && pr.SelectedNumber == raffleNumber).FirstOrDefault();
                 int winAmount = 0;
 
+                if (playerRaffle.Id == 0)
+                {
+                    return new RaffleResultWrapper
+                    {
+                        Message = "No bet found with that number and player"
+                    };
+                }
+
                 if (playerRaffle.Winner != null)
                     winAmount = playerRaffle.Winner.AmountEarned;
 
-                return new RaffleResult
+
+                return new RaffleResultWrapper
                 {
-                    PlayerId = playerId,
-                    RaffleId = raffleId,
-                    BetAmount = playerRaffle.BetAmount,
-                    BetNumber = playerRaffle.SelectedNumber,
-                    WinAmount = winAmount,
-                    BetResult = playerRaffle.Winner != null ?
+                    RaffleResult = new RaffleResult
+                    {
+                        PlayerId = playerId,
+                        RaffleId = raffleId,
+                        BetAmount = playerRaffle.BetAmount,
+                        BetNumber = playerRaffle.SelectedNumber,
+                        WinAmount = winAmount,
+                        BetResult = playerRaffle.Winner != null ?
                     true : false
+                    },
+                    Message = "Success"
                 };
+
             }
 
-            return null;
+            return new RaffleResultWrapper{
+                Message = "No raffle found with that Id"    
+            };
         }
 
-        public List<RaffleResult> GetPlayerResult(long playerId, long raffleId)
+        public RaffleResultsWrapper GetPlayerResults(long playerId, long raffleId)
         {
             bool raffle = _dbSet.Any(p => p.Id == raffleId);
             List<RaffleResult> results = new List<RaffleResult>();
@@ -225,10 +292,35 @@ namespace Application.Managers
                         BetResult = playerRaffle.Winner != null ?
                         true : false
                     });
+
+                    if(results.Count > 0)
+                    {
+                        return new RaffleResultsWrapper
+                        {
+                            Message = "Success",
+                            RaffleResults = results,
+                            Amount = results.Count
+                        };
+                    }
+                    else
+                    {
+                        return new RaffleResultsWrapper
+                        {
+                            Message = "No Bets found for current player in raffle",
+                            RaffleResults = results,
+                            Amount = results.Count
+                        };
+                    }
+                  
                 }
             }
 
-            return null;
+            return new RaffleResultsWrapper
+            {
+                Message = "No raffle found with that id",
+                RaffleResults = results,
+                Amount = results.Count
+            }; ;
         }
 
 
