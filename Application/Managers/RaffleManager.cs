@@ -92,6 +92,9 @@ namespace Application.Managers
 
                 IList<int> winnerNumbers = GetRandomNumber(numbers, _amountOfWinners);
 
+                //this line is for testing
+                winnerNumbers[0] = 5;
+
                 currentRaffle.WinningNumber = winnerNumbers[0];
 
                 IQueryable<PlayerRaffle> winnerPlayerTickets = _context.PlayerRaffle.Include(pr => pr.Player).ThenInclude(p => p.User).Where(p => p.RaffleId == raffleId && winnerNumbers.Contains(p.SelectedNumber));
