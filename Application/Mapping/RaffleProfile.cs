@@ -17,6 +17,8 @@ namespace Application.Mapping
             CreateMap<CreateBetCommand, BetAttemptStart>();
             CreateMap<BetAttemptResult, BetAttemptResultQuery>();
             CreateMap<RaffleResult, RaffleResultQuery>();
+            CreateMap<RaffleResultsWrapper, RaffleResultsQueryWrapper>();
+
         }
     }
 }
