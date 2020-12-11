@@ -35,7 +35,7 @@ namespace Application.Managers
 
         public virtual User GetByUsernameOrEmailWithRole(string term)
         {
-            return _dbSet.Include(u => u.UserRoles).ThenInclude(ur => ur.Role).FirstOrDefault(p => p.Username == term || p.Email == term);
+            return _dbSet.Include(u => u.Player).Include(u => u.UserRoles).ThenInclude(ur => ur.Role).FirstOrDefault(p => p.Username == term || p.Email == term);
         }
 
         public User GetByUsernameWithRole(string username)
@@ -47,5 +47,6 @@ namespace Application.Managers
         {
             return _dbSet.Include(u => u.UserRoles).ThenInclude(ur => ur.Role).FirstOrDefault(p => p.Id == id);
         }
+
     }
 }
