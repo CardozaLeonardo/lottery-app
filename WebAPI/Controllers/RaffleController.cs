@@ -60,7 +60,7 @@ namespace WebAPI.Controllers
         public ActionResult<RaffleResultQueryWrapper> GetPlayerResults(long raffleId)
         {
             User user = _userManager.GetByUsernameOrEmailWithRole(HttpContext.User.Identity.Name);
-            RaffleResultQueryWrapper result = _mapper.Map<RaffleResultQueryWrapper>(_raffleManager.GetPlayerResults(user.Player.Id, raffleId));
+            RaffleResultsQueryWrapper result = _mapper.Map<RaffleResultsQueryWrapper>(_raffleManager.GetPlayerResults(user.Player.Id, raffleId));
             return Ok(result);
         }
 

@@ -92,6 +92,9 @@ namespace Application.Managers
 
                 IList<int> winnerNumbers = GetRandomNumber(numbers, _amountOfWinners);
 
+                //this line is for testing
+                winnerNumbers[0] = 5;
+
                 currentRaffle.WinningNumber = winnerNumbers[0];
 
                 IQueryable<PlayerRaffle> winnerPlayerTickets = _context.PlayerRaffle.Include(pr => pr.Player).ThenInclude(p => p.User).Where(p => p.RaffleId == raffleId && winnerNumbers.Contains(p.SelectedNumber));
@@ -274,7 +277,7 @@ namespace Application.Managers
 
             if (raffle)
             {
-                List<PlayerRaffle> playerRaffles = _context.PlayerRaffle.Include(pr => pr.Winner).Where(pr => pr.PlayerId == playerId && pr.RaffleId == raffleId).ToList();
+                List<PlayerRaffle> playerRaffles = _context.PlayerRaffle.Include(pr => pr.Player).ThenInclude(p => p.User).Include(pr => pr.Winner).Where(pr => pr.PlayerId == playerId && pr.RaffleId == raffleId).ToList();
                 int winAmount = 0;
 
                 foreach(var playerRaffle in playerRaffles)
@@ -286,6 +289,8 @@ namespace Application.Managers
                     {
                         PlayerId = playerId,
                         RaffleId = raffleId,
+                        PlayerFirstName = playerRaffle.Player.User.Name,
+                        PlayerLastName = playerRaffle.Player.User.LastName,
                         BetAmount = playerRaffle.BetAmount,
                         BetNumber = playerRaffle.SelectedNumber,
                         WinAmount = winAmount,
