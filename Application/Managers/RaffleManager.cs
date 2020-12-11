@@ -296,28 +296,29 @@ namespace Application.Managers
                         WinAmount = winAmount,
                         BetResult = playerRaffle.Winner != null ?
                         true : false
-                    });
-
-                    if(results.Count > 0)
-                    {
-                        return new RaffleResultsWrapper
-                        {
-                            Message = "Success",
-                            RaffleResults = results,
-                            Amount = results.Count
-                        };
-                    }
-                    else
-                    {
-                        return new RaffleResultsWrapper
-                        {
-                            Message = "No Bets found for current player in raffle",
-                            RaffleResults = results,
-                            Amount = results.Count
-                        };
-                    }
-                  
+                    });                  
                 }
+
+
+                if (results.Count > 0)
+                {
+                    return new RaffleResultsWrapper
+                    {
+                        Message = "Success",
+                        RaffleResults = results,
+                        Amount = results.Count
+                    };
+                }
+                else
+                {
+                    return new RaffleResultsWrapper
+                    {
+                        Message = "No Bets found for current player in raffle",
+                        RaffleResults = results,
+                        Amount = results.Count
+                    };
+                }
+
             }
 
             return new RaffleResultsWrapper
