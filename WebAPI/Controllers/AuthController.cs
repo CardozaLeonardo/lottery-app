@@ -75,7 +75,7 @@ namespace WebAPI.Controllers
 
             var userModel = _userManager.GetByUsernameWithRole(username);
             var userOutput = _mapper.Map<GetUserQuery>(userModel);
-            var player = await _playerManager.Get(userOutput.Id);
+            var player = await _playerManager.Get(userOutput.Player.Id);
 
             userOutput.Roles = new List<RoleQuery>();
 

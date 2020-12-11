@@ -40,7 +40,7 @@ namespace Application.Managers
 
         public User GetByUsernameWithRole(string username)
         {
-            return _dbSet.Include(u => u.UserRoles).ThenInclude(ur => ur.Role).FirstOrDefault(p => p.Username == username);
+            return _dbSet.Include(u => u.Player).Include(u => u.UserRoles).ThenInclude(ur => ur.Role).FirstOrDefault(p => p.Username == username);
         }
 
         public virtual User GetWithRole(long id)
