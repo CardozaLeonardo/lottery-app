@@ -277,7 +277,7 @@ namespace Application.Managers
 
             if (raffle)
             {
-                List<PlayerRaffle> playerRaffles = _context.PlayerRaffle.Include(pr => pr.Winner).Where(pr => pr.PlayerId == playerId && pr.RaffleId == raffleId).ToList();
+                List<PlayerRaffle> playerRaffles = _context.PlayerRaffle.Include(pr => pr.Player).ThenInclude(p => p.User).Include(pr => pr.Winner).Where(pr => pr.PlayerId == playerId && pr.RaffleId == raffleId).ToList();
                 int winAmount = 0;
 
                 foreach(var playerRaffle in playerRaffles)
@@ -289,6 +289,8 @@ namespace Application.Managers
                     {
                         PlayerId = playerId,
                         RaffleId = raffleId,
+                        PlayerFirstName = playerRaffle.Player.User.Name,
+                        PlayerLastName = playerRaffle.Player.User.LastName,
                         BetAmount = playerRaffle.BetAmount,
                         BetNumber = playerRaffle.SelectedNumber,
                         WinAmount = winAmount,
