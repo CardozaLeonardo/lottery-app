@@ -28,6 +28,7 @@ namespace WebAPI.Controllers
         public UserController(IObjectFactory factory, IMapper mapper, IHashingService hashingService) : base()
         {
             _userManager = factory.Resolve<IUserManager>();
+            _manager = factory.Resolve<IUserManager>();
             _playerManager = factory.Resolve<IPlayerManager>();
             _roleManager = factory.Resolve<IRoleManager>();
             _mapper = mapper;
